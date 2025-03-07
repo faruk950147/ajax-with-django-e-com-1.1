@@ -150,12 +150,11 @@
 			
 				$.ajax({
 					type: 'POST',
-					url: '{% url "ajax_variant_select" %}',
+					url: '{% url "ajax_variant_select_sizes" %}',
 					data: {
 						productid: productid,
 						size: size,
 						csrfmiddlewaretoken: csrfmiddlewaretoken,
-						action: 'post'
 					},
 					dataType: 'json',
 					success: function(data) {
@@ -167,11 +166,6 @@
 							console.log('Size: ', data.size);	
 							$('#selected-size').text(data.size);
 						}
-						if (data.color) {
-							console.log('Color: ', data.color);
-							$('#selected-color').text(data.color);
-						}
-			
 						// ✅ Update Price
 						if (data.variant_price) {
 							console.log('Price: ', data.variant_price);
