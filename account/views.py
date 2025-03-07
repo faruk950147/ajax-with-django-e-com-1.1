@@ -26,6 +26,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 import json
 import random
+from venv import logger
 User = get_user_model()
 OTP_EXPIRATION_TIME = 300  # 5 minutes in seconds
 from django.core.cache import cache
