@@ -174,8 +174,8 @@
 									<form action="{% url 'addtocart' product.id %}" method="post" id="addchart-form">
 										<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 										<input type="hidden" name="variantid" id="variantid" value="{{ variant.id }}">
-										<p id="selected_size"><strong>Selected:</strong> Size: {{ variant.size }} </p>
-										<p id="selected_color"><strong>Selected:</strong> Color: {{ variant.color }} </p>
+										<p id="selected_size"><strong>Selected Size: </strong> {{ variant.size }} </p>
+										<p id="selected_color"><strong>Selected Color: </strong> {{ variant.color }} </p>
 										<h3 class="product-price">
 											{% if variant.price %}
 												$ {{ variant.price }}
