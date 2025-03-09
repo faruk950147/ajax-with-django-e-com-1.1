@@ -86,7 +86,7 @@
 
 							<div class="product-btns">
 								<div class=" ml-5">
-									{% if product.variant == 'Sizes-Colors' %}
+									{% if product.variant == 'Sizes-Colors' or product.variant == 'Sizes' or product.variant == 'Colors' %}
 										<div class="product-options">
 											<div class="size-option">
 												<form method="POST" id="post-form">
@@ -123,28 +123,7 @@
 											</form>
 										</div>
 										<br>
-									{% elif product.variant == 'Sizes' %}
-									<!--action="?q=selectvariant"-->
-										<form method="post" id="post-color">
-											<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-											<div id="appendHere">
-												<ul class="color-option">
-													<li><span class="text-uppercase">Size:</span></li>
-								
-													{% for size in sizes %}
-														<input type="radio" {% if variant and variant.id == size.id %} checked {% endif %}
-															name="colorid" id="colorid" value="{{ size.id }}" onchange="if(this.value) this.form.submit();">
-														<li {% if variant and variant.id == size.id %} class="active" {% endif %}>
-															<a style="color: #204d74; width: 90px">$ {{ size.price }}<br> {{ size.size.title }}</a>
-														</li>
-													{% endfor %}
-								
-												</ul>
-											</div>
-										</form>	
-										<br>				
-									{% elif product.variant == 'Colors' %}
-									<!--action="?q=selectvariant"-->
+
 										<form method="post" id="post-color">
 											<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 											<div id="appendHere">
@@ -163,6 +142,8 @@
 												</ul>
 											</div>
 										</form>
+									{% else %}
+										<h4 class="text-muted title0 fs-5">Variant Not Available</h4>
 									{% endif %}
 								</div>
 								<br>
