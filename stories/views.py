@@ -86,9 +86,12 @@ def ajax_variant_select_sizes(request):
         if size_id:
             """If only Size is selected, filter colors based on the selected Size."""
             colors = variants.filter(size_id=size_id).distinct()  # Filter colors based on the selected Size
-            selected_size = variants.filter(size_id=size_id).first()  # Selected size title
-            selected_size_title = selected_size.size.title if selected_size else "Unknown Size"
-            selected_price = variants.filter(size_id=size_id).first().price if variants.filter(size_id=size_id).first() else None
+            
+            # Get first matching variant (optimized)
+            selected_variant = variants.filter(size_id=size_id).first()
+
+            selected_size_title = selected_variant.size.title if selected_variant else "Unknown Size"
+            selected_price = selected_variant.price if selected_variant else None
 
             return JsonResponse({
                 'rendered_table': render_to_string('color_list.html', {'colors': colors}),
@@ -97,7 +100,6 @@ def ajax_variant_select_sizes(request):
             })
 
     return JsonResponse({'messages': 'Invalid request'})
-
 
 # Reviews View  
 @method_decorator(never_cache, name='dispatch')
