@@ -59,14 +59,16 @@ def SingleProductView(request, id):
             color_id = request.POST.get('colorid')
             variant = Variants.objects.filter(id=color_id).first()
 
-        colors = Variants.objects.filter(product_id=id, size_id=variant.size_id) if variant else []
-        sizes = Variants.objects.raw('SELECT * FROM stories_variants WHERE product_id=%s GROUP BY size_id', [id]) if variants.exists() else []
+        # Handle 'Colors' variant specifically
+        if product.variant == 'Colors':
+            colors = variants  # Use the same 'variants' query for colors
+            context['colors'] = colors  # Add colors directly to context
+        elif product.variant == 'Sizes' or product.variant == 'Sizes-Colors':
+            # Fetch sizes for 'Sizes' or 'Sizes-Colors' variant
+            sizes = Variants.objects.raw('SELECT * FROM stories_variants WHERE product_id=%s GROUP BY size_id', [id]) if variants.exists() else []
+            context['sizes'] = sizes  # Add sizes directly to context
 
-        context.update({
-            'sizes': sizes,
-            'colors': colors,
-            'variant': variant,
-        })
+        context['variant'] = variant
 
     return render(request, 'stories/single.html', context)
 
