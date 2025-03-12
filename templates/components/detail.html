@@ -110,7 +110,7 @@
 														<li><span class="text-uppercase">Color:</span></li>
 														{% for color in colors %}
 															<input type="radio" {% if variant and variant.id == color.id %} checked {% endif %}
-																name="colorid" id="colorid" value="{{ color.id }}" onchange="if(this.value) this.form.submit();">
+																name="colorid" id="colorid" value="{{ color.id }}">
 															<li {% if variant and variant.id == color.id %} class="active" {% endif %}>
 																<a style="background-color:{{ color.color.code }}; color: #D9D9D9; text-shadow: 1px 1px #000000; width: 90px">
 																	{{ color.price }} {{ color.color }}
@@ -133,7 +133,7 @@
 								
 													{% for size in sizes %}
 														<input type="radio" {% if variant and variant.id == size.id %} checked {% endif %}
-															name="colorid" id="colorid" value="{{ size.id }}" onchange="if(this.value) this.form.submit();">
+															name="colorid" id="colorid" value="{{ size.id }}">
 														<li {% if variant and variant.id == size.id %} class="active" {% endif %}>
 															<a style="color: #204d74; width: 90px">$ {{ size.price }}<br> {{ size.size.title }}</a>
 														</li>
@@ -152,7 +152,7 @@
 													<li><span class="text-uppercase">Color:</span></li>
 													{% for color in colors %}
 														<input type="radio" {% if variant and variant.id == color.id %} checked {% endif %}
-															name="colorid" id="colorid" value="{{ color.id }}" onchange="if(this.value) this.form.submit();">
+															name="colorid" id="colorid" value="{{ color.id }}">
 														<li {% if variant and variant.id == color.id %} class="active" {% endif %}>
 															<a style="background-color:{{ color.color.code }}; color: #D9D9D9; text-shadow: 1px 1px #000000; width: 90px">
 																{{ color.price }} {{ color.color }}
@@ -170,8 +170,8 @@
 									<form action="{% url 'addtocart' product.id %}" method="post" id="addchart-form">
 										<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 										<input type="hidden" name="variantid" id="variantid" value="{{ variant.id }}">
-										<p id="selected_size"><strong>Selected:</strong> Size: {{ variant.size.title }} </p>
-										<p id="selected_color"><strong>Selected:</strong> Color: {{ variant.color.title }} </p>
+										<p id="selected-size">Selected Size: {{ variant.size.title }} </p>
+										<p id="selected-color">Selected Color: {{ variant.color.title }} </p>
 										<h3 class="product-price">
 											{% if variant.price %}
 												$ {{ variant.price }}

@@ -1,4 +1,5 @@
 from ast import Try
+from turtle import color
 from django.shortcuts import render,redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.utils.decorators import method_decorator
@@ -78,9 +79,9 @@ def ajax_variant_select_sizes(request):
     if request.method == 'POST':
         productid = request.POST.get('productid')
         size_id = request.POST.get('size')
-
+        
         if not productid:
-            return JsonResponse({'messages': 'Invalid product ID'})
+            return JsonResponse({'status': 400, 'messages': 'Invalid product ID'})
 
         # All variants of the product are queried only once
         variants = Variants.objects.filter(product_id=productid)
@@ -96,12 +97,42 @@ def ajax_variant_select_sizes(request):
             selected_price = selected_variant.price if selected_variant else None
 
             return JsonResponse({
+                'status': 200,
+                'messages': 'Size selected successfully',
                 'rendered_table': render_to_string('color_list.html', {'colors': colors}),
                 'size': selected_size_title,
                 'price': selected_price
             })
 
     return JsonResponse({'messages': 'Invalid request'})
+
+def ajax_variant_select_color(request):
+    """ Updates variant details when a color is selected """
+    if request.method == 'POST':
+        productid = request.POST.get('productid')
+        color_id = request.POST.get('color')
+
+        if not productid:
+            return JsonResponse({'status': 400, 'messages': 'Invalid product ID'})
+
+        variants = Variants.objects.filter(product_id=productid)
+        
+        if color_id:
+            selected_variant = variants.filter(color_id=color_id).first()
+
+            if selected_variant:
+                selected_color_title = selected_variant.color.title if selected_variant.color else "No title available"
+                selected_price = selected_variant.price if selected_variant.price else "No price available"
+                return JsonResponse({
+                    'status': 200,
+                    'messages': 'Color variant found for the selected color',
+                    'color': selected_color_title,
+                    'price': selected_price  
+                })
+            else:
+                return JsonResponse({'status': 400, 'messages': 'No variant found for the selected color'})
+
+    return JsonResponse({'status': 400, 'messages': 'Invalid request method'})
 
 # Reviews View  
 @method_decorator(never_cache, name='dispatch')

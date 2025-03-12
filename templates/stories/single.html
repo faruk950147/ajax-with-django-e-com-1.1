@@ -158,16 +158,21 @@
 					},
 					dataType: 'json',
 					success: function(data) {
-						$('#appendHere').html(data.rendered_table);
+						if(data.status == 200){
+							$('#appendHere').html(data.rendered_table);
 						
-						if (data && data.size) {
-							console.log(data.size)
-							$('#selected-size').text(data.size);
+							if (data && data.size) {
+								$('#selected-size').text('Selected Size: ' + data.size);
+							}
+							if (data && data.price) {
+								$('.product-price').text('$ ' + data.price);
+							}
+							alertify.success(data.messages)
 						}
-						if (data && data.price) {
-							console.log("Price: " + data.price)
-							$('.product-price').text('$' + data.price);
+						else if(data.status == 400){
+							alertify.error(data.messages)
 						}
+
 					},
 					error: function(xhr) {
 						console.log("AJAX Error:", xhr.responseText);
@@ -175,38 +180,49 @@
 				});
 			});
 
-			/*
-			$(document).on('change', 'input[name="colorid"]', function(e){
+			$(document).on('change', 'input[name="colorid"]', function(e) {
 				e.preventDefault();
-
+			
 				let productid = $('#productid').val();
 				let color = $(this).val();
 				let csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
+
+				console.log('color' + color)
 			
 				if (!color) {  
 					alertify.error("Please select a color first!");  
 					return;  
 				}
+			
 				$.ajax({
-					method: 'POST',
-					url: '',
+					method: "POST",
+					url: '{% url "ajax_variant_select_color" %}',
 					data: {
-						productid: productid,
-						color: color,
-						csrfmiddlewaretoken: csrfmiddlewaretoken,
+						'productid': productid,
+						'color': color,
+						'csrfmiddlewaretoken': csrfmiddlewaretoken
 					},
-					dataType: 'json',
 					success: function(data) {
-						$('#appendHere').html(data.rendered_table);
-
+						if (data.status == 200) {
+							if (data.color && data.price) {
+								alertify.success(data.messages);
+								// Display color and price if available
+								$('#selected-color').text('Selected Color: ' + data.color);
+								$('.product-price').text('$ ' + data.price);
+							} else {
+								alertify.error("No variant found for the selected color.");
+							}
+						} else {
+							alertify.error(data.messages);
+						}
 					},
 					error: function(xhr) {
 						console.log("AJAX Error:", xhr.responseText);
+						alertify.error("Something went wrong! Please try again.");
 					}
 				});
 			});
-			*/
-			
+
 		});
 	</script>
 {% endblock extra_scripts %}	
