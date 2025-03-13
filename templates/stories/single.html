@@ -180,14 +180,13 @@
 				});
 			});
 
-			$(document).on('change', 'input[name="colorid"]', function(e) {
-				e.preventDefault();
-			
+			$(document).on('change', 'input[name="colorid"]', function() {
 				let productid = $('#productid').val();
-				let color = $(this).val();
+				//let color = $(this).val()
+				let color = $("input[name='colorid']:checked").val();
 				let csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
-
-				console.log('color' + color)
+			
+				console.log("Selected color:", color);
 			
 				if (!color) {  
 					alertify.error("Please select a color first!");  
@@ -203,10 +202,10 @@
 						'csrfmiddlewaretoken': csrfmiddlewaretoken
 					},
 					success: function(data) {
-						if (data.status == 200) {
+						if (data.status === 200) {
 							if (data.color && data.price) {
 								alertify.success(data.messages);
-								// Display color and price if available
+								
 								$('#selected-color').text('Selected Color: ' + data.color);
 								$('.product-price').text('$ ' + data.price);
 							} else {
@@ -222,6 +221,7 @@
 					}
 				});
 			});
+			
 
 		});
 	</script>
