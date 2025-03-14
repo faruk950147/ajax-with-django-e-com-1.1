@@ -69,14 +69,14 @@
 							<h2 class="product-name">{{product.title|title}}</h2>
 							<div>
 							<div class="product-rating reviews_total_avg">
-                                <i class="fa fa-star{% if product.avaregereview < 1%}-o empty{% endif%}"></i>
-                                <i class="fa fa-star{% if product.avaregereview < 2%}-o empty{% endif%}"></i>
-                                <i class="fa fa-star{% if product.avaregereview < 3%}-o empty{% endif%}"></i>
-                                <i class="fa fa-star{% if product.avaregereview < 4%}-o empty{% endif%}"></i>
-                                <i class="fa fa-star{% if product.avaregereview < 5%}-o empty{% endif%}"></i>
-                                {{ product.avaregereview |stringformat:".2f"}}
+                                <i class="fa fa-star{% if product.average_review < 1%}-o empty{% endif%}"></i>
+                                <i class="fa fa-star{% if product.average_review < 2%}-o empty{% endif%}"></i>
+                                <i class="fa fa-star{% if product.average_review < 3%}-o empty{% endif%}"></i>
+                                <i class="fa fa-star{% if product.average_review < 4%}-o empty{% endif%}"></i>
+                                <i class="fa fa-star{% if product.average_review < 5%}-o empty{% endif%}"></i>
+                                {{ product.average_review |stringformat:".2f"}}
                             </div>
-							<a class="review_count"  data-toggle="tab" href="#tab4">{{ product.countreview}}  Review(s) / Add Review</a>
+							<a class="review_count"  data-toggle="tab" href="#tab4">{{ product.count_review}}  Review(s) / Add Review</a>
 							</div>
 							{% if product.in_stock and product.in_stock_max >= 1 %}
 							<p><strong>Availability:</strong> {{product.available_in_stock_msg}}</p>
@@ -110,10 +110,10 @@
 														<li><span class="text-uppercase">Color:</span></li>
 														{% for color in colors %}
 															<input type="radio" {% if variant and variant.id == color.id %} checked {% endif %}
-																name="colorid" id="colorid_{{ color.id }}" value="{{ color.id }}">
+																name="colorid" id="colorid_{{ color.id }}" value="{{ color.id }}" onchange="this.form.submit();">
 															<li {% if variant and variant.id == color.id %} class="active" {% endif %}>
 																<a style="background-color:{{ color.color.code }}; color: #D9D9D9; text-shadow: 1px 1px #000000; width: 90px">
-																	{{ color.price }} {{ color.color }}
+																	{{ color.price }} {{ color.color.title }}
 																</a>
 																<img src="{{ color.image }}" style="height: 70px">
 															</li>
@@ -133,9 +133,9 @@
 								
 													{% for size in sizes %}
 														<input type="radio" {% if variant and variant.id == size.id %} checked {% endif %}
-															name="colorid" id="colorid_{{ size.id }}" value="{{ size.id }}">
+															name="colorid" id="colorid_{{ size.id }}" value="{{ size.id }}" onchange="this.form.submit();">
 														<li {% if variant and variant.id == size.id %} class="active" {% endif %}>
-															<a style="color: #204d74; width: 90px">$ {{ size.price }}<br> {{ size.size.title }}</a>
+															<a style="color: #204d74; width: 90px">$ {{ size.price }}  {{ size.size.title }}</a>
 														</li>
 													{% endfor %}
 								
@@ -155,7 +155,7 @@
 															name="colorid" id="colorid_{{ color.id }}" value="{{ color.id }}">
 														<li {% if variant and variant.id == color.id %} class="active" {% endif %}>
 															<a style="background-color:{{ color.color.code }}; color: #D9D9D9; text-shadow: 1px 1px #000000; width: 90px">
-																{{ color.price }} {{ color.color }}
+																{{ color.price }} {{ color.color.title }}
 															</a>
 															<img src="{{ color.image }}" style="height: 70px">
 														</li>
